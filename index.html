@@ -5,32 +5,178 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>RYNZZ SHOP — Payment DANA</title>
 <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-<meta id="metaThemeColor" name="theme-color" content="#0b1220">
-<link rel="stylesheet" href="style.css">
+<style>
+:root{
+  --bg:#0b1220;
+  --card:#0f172a;
+  --text:#eaf6ff;
+  --muted:#9db7c9;
+  --accent:#00aaff;
+  --accent-2:#7cc7ff;
+  --rail:#0e2035;
+  --border:rgba(255,255,255,.08);
+  --shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{
+  font-family:Poppins,system-ui,Arial;
+  background:var(--bg);
+  color:var(--text);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+.app{
+  width:100%;
+  max-width:480px;
+  height:100svh;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  padding:14px;
+}
+.topbar{display:flex;align-items:center;justify-content:center;}
+.brand{display:flex;align-items:center;gap:10px;}
+.brand .dot{
+  width:10px;height:10px;border-radius:8px;
+  background:linear-gradient(180deg,var(--accent),var(--accent-2));
+  box-shadow:0 0 12px var(--accent);
+}
+.brand .title{
+  font-family:Audiowide,system-ui;
+  font-size:16px;
+}
+.clock{
+  font-family:Audiowide,monospace;
+  font-size:28px;
+  color:var(--accent);
+  text-align:center;
+  padding:8px 10px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:rgba(15,23,42,0.7);
+}
+.rail{
+  border:1px dashed var(--border);
+  background:var(--rail);
+  border-radius:12px;
+  padding:8px 0;
+  overflow:hidden;
+}
+.marquee{
+  white-space:nowrap;
+  display:inline-block;
+  padding-left:100%;
+  animation:marq 14s linear infinite;
+  font-family:Audiowide;
+  color:var(--accent-2);
+}
+@keyframes marq{
+  0%{transform:translateX(0)}
+  100%{transform:translateX(-100%)}
+}
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  box-shadow:var(--shadow);
+  padding:16px;
+  display:flex;
+  gap:14px;
+  align-items:center;
+}
+.logo{
+  width:64px;height:64px;border-radius:12px;
+  display:grid;place-items:center;
+  border:1px solid var(--border);
+  background:linear-gradient(180deg, rgba(11,18,32,0.7), var(--card));
+}
+.logo img{width:42px;height:42px;object-fit:contain}
+.name{
+  font-family:Audiowide;
+  font-size:14px;
+  color:var(--accent);
+}
+.actions{display:flex;align-items:center;}
+.btn{
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:transparent;
+  color:var(--text);
+  font-weight:700;
+  cursor:pointer;
+}
+.btn.primary{
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));
+  color:#071118;
+  border:none;
+}
+.btn.blue3d{
+  background:linear-gradient(180deg,#00aaff,#006688);
+  box-shadow:0 4px #004466;
+  color:white;
+}
+.btn.blue3d:active{
+  transform:translateY(2px);
+  box-shadow:0 2px #004466;
+}
+.footer{
+  margin-top:auto;
+  text-align:center;
+  font-size:12px;
+  color:var(--muted);
+}
+.popup{
+  position:fixed;
+  top:0;left:0;right:0;bottom:0;
+  background:rgba(0,0,0,0.6);
+  display:none;
+  align-items:center;
+  justify-content:center;
+}
+.popup-content{
+  background:var(--card);
+  padding:20px;
+  border-radius:14px;
+  box-shadow:var(--shadow);
+  text-align:center;
+  animation:fadeIn 0.3s ease;
+}
+@keyframes fadeIn{
+  from{transform:scale(0.8);opacity:0;}
+  to{transform:scale(1);opacity:1;}
+}
+.helper{
+  font-size:12px;
+  color:var(--muted);
+  margin-bottom:12px;
+}
+.close-btn{margin-top:8px;}
+</style>
 </head>
 <body>
   <div class="app">
     <div class="topbar">
       <div class="brand">
         <div class="dot"></div>
-        <div class="title">RYNZZ SHOP</div>
+        <div class="title" id="shopNameTop"></div>
       </div>
     </div>
 
     <div class="clock" id="clock">--:--:--</div>
 
     <div class="rail">
-      <div class="marquee" id="mq">
-        Selamat datang di RYNZZ SHOP • Pembayaran via DANA • Pastikan nominal & nomor tujuan benar • Simpan bukti transfer • Terima kasih!
-      </div>
+      <div class="marquee" id="mq"></div>
     </div>
 
     <div class="card">
       <div class="logo">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGglzp3pi04sdTe7teWwIj3abbA0HHqwYcxwzXVWi5ueYhk_MwQge3tE8&s=10" alt="DANA">
+        <img id="danaLogo" alt="DANA">
       </div>
       <div class="meta">
-        <div class="name">DANA</div>
+        <div class="name" id="paymentName"></div>
       </div>
       <div class="actions">
         <button class="btn primary" id="detailBtn">Detail</button>
@@ -45,14 +191,67 @@
   <!-- Pop-up -->
   <div class="popup" id="popup">
     <div class="popup-content">
-      <h2>DANA</h2>
-      <p id="popupNumber">085134380708</p>
-      <div class="helper">Nama akun: RYNZZ SHOP</div>
+      <h2 id="popupTitle"></h2>
+      <p id="popupNumber"></p>
+      <div class="helper" id="popupHelper"></div>
       <button class="btn primary" id="copyBtn">Salin</button>
       <button class="btn close-btn" id="closePopup">Tutup</button>
     </div>
   </div>
 
-<script src="script.js"></script>
+<script>
+/* ====== DATA DARI SINI ====== */
+const SHOP_NAME    = "RYNZZ SHOP";
+const DANA_NUMBER  = "081234567890";
+const ADMIN_WA     = "6281234567890";
+const DANA_LOGO    = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGglzp3pi04sdTe7teWwIj3abbA0HHqwYcxwzXVWi5ueYhk_MwQge3tE8&s=10";
+const MARQUEE_TEXT = "Selamat datang di RYNZZ SHOP • Pembayaran via DANA • Pastikan nominal & nomor tujuan benar • Simpan bukti transfer • Terima kasih!";
+/* ============================ */
+
+// Set tampilan awal dari data
+document.getElementById('shopNameTop').textContent = SHOP_NAME;
+document.getElementById('paymentName').textContent = "DANA";
+document.getElementById('danaLogo').src = DANA_LOGO;
+document.getElementById('mq').textContent = MARQUEE_TEXT;
+document.getElementById('popupTitle').textContent = "DANA";
+document.getElementById('popupNumber').textContent = DANA_NUMBER;
+document.getElementById('popupHelper').textContent = "Nama akun: " + SHOP_NAME;
+
+// Clock
+function updateClock(){
+  const now = new Date();
+  const opts = { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false };
+  document.getElementById('clock').textContent =
+    new Intl.DateTimeFormat('id-ID', opts).format(now);
+}
+setInterval(updateClock, 1000); updateClock();
+
+// Popup
+const popup = document.getElementById('popup');
+document.getElementById('detailBtn').addEventListener('click', ()=>{
+  popup.style.display = 'flex';
+});
+document.getElementById('closePopup').addEventListener('click', ()=>{
+  popup.style.display = 'none';
+});
+popup.addEventListener('click', e=>{
+  if(e.target === popup) popup.style.display = 'none';
+});
+
+// Copy button
+document.getElementById('copyBtn').addEventListener('click', ()=>{
+  navigator.clipboard.writeText(DANA_NUMBER).then(()=>{
+    alert("Nomor DANA berhasil disalin!");
+  }).catch(()=>{
+    alert("Gagal menyalin nomor.");
+  });
+});
+
+// Chat Admin
+document.getElementById('waBtn').addEventListener('click', ()=>{
+  const text = encodeURIComponent(`Halo ${SHOP_NAME}, saya sudah transfer via DANA ke nomor ${DANA_NUMBER}. Mohon dicek ya.`);
+  window.location.href = `https://wa.me/${ADMIN_WA}?text=${text}`;
+});
+</script>
 </body>
 </html>
