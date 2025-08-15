@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>RYNZZ SHOP — Payment DANA</title>
 <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<meta id="metaThemeColor" name="theme-color" content="#0b1220">
 <style>
 :root{
   --bg:#0b1220;
@@ -23,6 +24,7 @@ body{
   font-family:Poppins,system-ui,Arial;
   background:var(--bg);
   color:var(--text);
+  min-height:100svh;
   display:flex;
   justify-content:center;
   align-items:center;
@@ -36,8 +38,15 @@ body{
   gap:12px;
   padding:14px;
 }
-.topbar{display:flex;align-items:center;justify-content:center;}
-.brand{display:flex;align-items:center;gap:10px;}
+.topbar{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  justify-content:center;
+}
+.brand{
+  display:flex;align-items:center;gap:10px;
+}
 .brand .dot{
   width:10px;height:10px;border-radius:8px;
   background:linear-gradient(180deg,var(--accent),var(--accent-2));
@@ -45,17 +54,21 @@ body{
 }
 .brand .title{
   font-family:Audiowide,system-ui;
+  letter-spacing:.5px;
   font-size:16px;
 }
 .clock{
   font-family:Audiowide,monospace;
   font-size:28px;
+  line-height:1;
   color:var(--accent);
+  text-shadow:0 0 10px color-mix(in srgb, var(--accent) 35%, transparent);
   text-align:center;
   padding:8px 10px;
   border:1px solid var(--border);
   border-radius:12px;
-  background:rgba(15,23,42,0.7);
+  background:color-mix(in srgb, var(--card) 70%, transparent);
+  backdrop-filter:saturate(120%) blur(6px);
 }
 .rail{
   border:1px dashed var(--border);
@@ -83,24 +96,25 @@ body{
   box-shadow:var(--shadow);
   padding:16px;
   display:flex;
-  gap:14px;
   align-items:center;
+  justify-content:space-between;
+  gap:14px;
 }
 .logo{
   width:64px;height:64px;border-radius:12px;
   display:grid;place-items:center;
   border:1px solid var(--border);
-  background:linear-gradient(180deg, rgba(11,18,32,0.7), var(--card));
+  background:linear-gradient(180deg, color-mix(in srgb, var(--bg) 70%, #fff 30%), var(--card));
 }
 .logo img{width:42px;height:42px;object-fit:contain}
 .name{
   font-family:Audiowide;
   font-size:14px;
+  letter-spacing:.3px;
   color:var(--accent);
 }
-.actions{display:flex;align-items:center;}
 .btn{
-  padding:10px 12px;
+  padding:10px 14px;
   border-radius:10px;
   border:1px solid var(--border);
   background:transparent;
@@ -110,17 +124,18 @@ body{
 }
 .btn.primary{
   background:linear-gradient(90deg,var(--accent),var(--accent-2));
-  color:#071118;
-  border:none;
+  color:#071118;border:none;
 }
-.btn.blue3d{
-  background:linear-gradient(180deg,#00aaff,#006688);
-  box-shadow:0 4px #004466;
-  color:white;
+.btn.chat{
+  background:linear-gradient(180deg,#00aaff,#0077cc);
+  color:#fff;
+  font-weight:700;
+  box-shadow:0 4px 0 #005fa3;
+  transition:transform 0.1s;
 }
-.btn.blue3d:active{
+.btn.chat:active{
   transform:translateY(2px);
-  box-shadow:0 2px #004466;
+  box-shadow:0 2px 0 #005fa3;
 }
 .footer{
   margin-top:auto;
@@ -128,32 +143,50 @@ body{
   font-size:12px;
   color:var(--muted);
 }
+.toast{
+  position:fixed;left:50%;transform:translateX(-50%);
+  top:-80px;opacity:0;
+  transition:top .35s ease, opacity .3s;
+  padding:12px 16px;border-radius:10px;
+  background:var(--accent);color:#08131b;font-weight:800;
+  z-index:50;
+  box-shadow:0 8px 22px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+.toast.show{top:16px;opacity:1}
+
+/* Popup */
+.popup-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.6);
+  display:none;align-items:center;justify-content:center;
+  z-index:100;
+}
 .popup{
-  position:fixed;
-  top:0;left:0;right:0;bottom:0;
-  background:rgba(0,0,0,0.6);
-  display:none;
-  align-items:center;
-  justify-content:center;
-}
-.popup-content{
   background:var(--card);
+  border-radius:16px;
   padding:20px;
-  border-radius:14px;
-  box-shadow:var(--shadow);
+  max-width:320px;
+  width:90%;
   text-align:center;
-  animation:fadeIn 0.3s ease;
+  border:1px solid var(--border);
+  box-shadow:var(--shadow);
 }
-@keyframes fadeIn{
-  from{transform:scale(0.8);opacity:0;}
-  to{transform:scale(1);opacity:1;}
+.popup h3{
+  margin:0 0 10px;
+  font-family:Audiowide;
+  color:var(--accent);
 }
-.helper{
-  font-size:12px;
-  color:var(--muted);
-  margin-bottom:12px;
+.popup .number{
+  background:color-mix(in srgb, var(--bg) 70%, #fff 30%);
+  padding:10px;
+  border-radius:10px;
+  font-family:monospace;
+  margin:10px 0;
+  user-select:all;
 }
-.close-btn{margin-top:8px;}
+.popup .btn{
+  margin-top:10px;
+  width:100%;
+}
 </style>
 </head>
 <body>
@@ -161,61 +194,46 @@ body{
     <div class="topbar">
       <div class="brand">
         <div class="dot"></div>
-        <div class="title" id="shopNameTop"></div>
+        <div class="title" id="shopName"></div>
       </div>
     </div>
-
     <div class="clock" id="clock">--:--:--</div>
-
     <div class="rail">
       <div class="marquee" id="mq"></div>
     </div>
-
     <div class="card">
       <div class="logo">
         <img id="danaLogo" alt="DANA">
       </div>
-      <div class="meta">
-        <div class="name" id="paymentName"></div>
-      </div>
-      <div class="actions">
-        <button class="btn primary" id="detailBtn">Detail</button>
-      </div>
+      <div class="name" id="paymentName"></div>
+      <button class="btn primary" id="detailBtn">Detail</button>
     </div>
-
-    <button class="btn blue3d" id="waBtn">💬 Chat Admin</button>
-
+    <button class="btn chat" id="waBtn">💬 Chat Admin</button>
     <div class="footer">Pembayaran manual — kirim bukti ke admin setelah transfer.</div>
   </div>
+  <div class="toast" id="toast">Disalin ✅</div>
 
-  <!-- Pop-up -->
-  <div class="popup" id="popup">
-    <div class="popup-content">
-      <h2 id="popupTitle"></h2>
-      <p id="popupNumber"></p>
-      <div class="helper" id="popupHelper"></div>
-      <button class="btn primary" id="copyBtn">Salin</button>
-      <button class="btn close-btn" id="closePopup">Tutup</button>
+  <!-- Popup -->
+  <div class="popup-overlay" id="popupOverlay">
+    <div class="popup">
+      <h3 id="popupTitle"></h3>
+      <div class="number" id="popupNumber"></div>
+      <button class="btn primary" id="copyBtn">Salin Nomor</button>
+      <button class="btn" id="closePopup">Tutup</button>
     </div>
   </div>
 
 <script>
-/* ====== DATA DARI SINI ====== */
-const SHOP_NAME    = "RYNZZ SHOP";
-const DANA_NUMBER  = "081234567890";
-const ADMIN_WA     = "6281234567890";
-const DANA_LOGO    = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGglzp3pi04sdTe7teWwIj3abbA0HHqwYcxwzXVWi5ueYhk_MwQge3tE8&s=10";
-const MARQUEE_TEXT = "Selamat datang di RYNZZ SHOP • Pembayaran via DANA • Pastikan nominal & nomor tujuan benar • Simpan bukti transfer • Terima kasih!";
-/* ============================ */
+const DANA_NUMBER = "085134380708";
+const ADMIN_WA    = "6285134380708";
+const SHOP_NAME   = "RYNZZ SHOP";
+const DANA_LOGO   = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGglzp3pi04sdTe7teWwIj3abbA0HHqwYcxwzXVWi5ueYhk_MwQge3tE8&s=10";
+const MARQUEE_TEXT = `Selamat datang di ${SHOP_NAME} • Pembayaran via DANA • Pastikan nominal & nomor tujuan benar • Simpan bukti transfer • Terima kasih!`;
 
-// Set tampilan awal dari data
-document.getElementById('shopNameTop').textContent = SHOP_NAME;
+document.getElementById('shopName').textContent = SHOP_NAME;
 document.getElementById('paymentName').textContent = "DANA";
 document.getElementById('danaLogo').src = DANA_LOGO;
 document.getElementById('mq').textContent = MARQUEE_TEXT;
-document.getElementById('popupTitle').textContent = "DANA";
-document.getElementById('popupNumber').textContent = DANA_NUMBER;
-document.getElementById('popupHelper').textContent = "Nama akun: " + SHOP_NAME;
 
 // Clock
 function updateClock(){
@@ -226,28 +244,31 @@ function updateClock(){
 }
 setInterval(updateClock, 1000); updateClock();
 
+// Toast
+const toast = document.getElementById('toast');
+function showToast(msg="Disalin ✅"){
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(()=> toast.classList.remove('show'), 2000);
+}
+
 // Popup
-const popup = document.getElementById('popup');
+const popupOverlay = document.getElementById('popupOverlay');
 document.getElementById('detailBtn').addEventListener('click', ()=>{
-  popup.style.display = 'flex';
+  document.getElementById('popupTitle').textContent = "Akun DANA";
+  document.getElementById('popupNumber').textContent = DANA_NUMBER;
+  popupOverlay.style.display = 'flex';
 });
 document.getElementById('closePopup').addEventListener('click', ()=>{
-  popup.style.display = 'none';
+  popupOverlay.style.display = 'none';
 });
-popup.addEventListener('click', e=>{
-  if(e.target === popup) popup.style.display = 'none';
-});
-
-// Copy button
 document.getElementById('copyBtn').addEventListener('click', ()=>{
-  navigator.clipboard.writeText(DANA_NUMBER).then(()=>{
-    alert("Nomor DANA berhasil disalin!");
-  }).catch(()=>{
-    alert("Gagal menyalin nomor.");
-  });
+  navigator.clipboard.writeText(DANA_NUMBER)
+    .then(()=> showToast('Nomor DANA disalin'))
+    .catch(()=> showToast('Gagal menyalin'));
 });
 
-// Chat Admin
+// WA Button
 document.getElementById('waBtn').addEventListener('click', ()=>{
   const text = encodeURIComponent(`Halo ${SHOP_NAME}, saya sudah transfer via DANA ke nomor ${DANA_NUMBER}. Mohon dicek ya.`);
   window.location.href = `https://wa.me/${ADMIN_WA}?text=${text}`;
