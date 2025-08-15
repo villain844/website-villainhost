@@ -41,7 +41,6 @@ body{
 .topbar{
   display:flex;
   align-items:center;
-  gap:8px;
   justify-content:center;
 }
 .brand{
@@ -100,21 +99,26 @@ body{
   justify-content:space-between;
   gap:14px;
 }
+.card-left{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
 .logo{
-  width:64px;height:64px;border-radius:12px;
+  width:50px;height:50px;border-radius:12px;
   display:grid;place-items:center;
   border:1px solid var(--border);
   background:linear-gradient(180deg, color-mix(in srgb, var(--bg) 70%, #fff 30%), var(--card));
 }
-.logo img{width:42px;height:42px;object-fit:contain}
+.logo img{width:32px;height:32px;object-fit:contain}
 .name{
   font-family:Audiowide;
-  font-size:14px;
+  font-size:16px;
   letter-spacing:.3px;
   color:var(--accent);
 }
 .btn{
-  padding:10px 14px;
+  padding:10px 12px;
   border-radius:10px;
   border:1px solid var(--border);
   background:transparent;
@@ -127,15 +131,15 @@ body{
   color:#071118;border:none;
 }
 .btn.chat{
-  background:linear-gradient(180deg,#00aaff,#0077cc);
-  color:#fff;
+  background:linear-gradient(180deg,#0094ff,#006bb3);
+  color:white;
+  box-shadow:0 4px 0 #004a80;
+  border:none;
   font-weight:700;
-  box-shadow:0 4px 0 #005fa3;
-  transition:transform 0.1s;
 }
 .btn.chat:active{
   transform:translateY(2px);
-  box-shadow:0 2px 0 #005fa3;
+  box-shadow:0 2px 0 #004a80;
 }
 .footer{
   margin-top:auto;
@@ -153,39 +157,33 @@ body{
   box-shadow:0 8px 22px color-mix(in srgb, var(--accent) 35%, transparent);
 }
 .toast.show{top:16px;opacity:1}
-
-/* Popup */
-.popup-overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,.6);
-  display:none;align-items:center;justify-content:center;
+.modal{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,.6);display:none;
+  justify-content:center;align-items:center;
   z-index:100;
 }
-.popup{
+.modal-content{
   background:var(--card);
-  border-radius:16px;
   padding:20px;
+  border-radius:14px;
   max-width:320px;
   width:90%;
   text-align:center;
   border:1px solid var(--border);
-  box-shadow:var(--shadow);
 }
-.popup h3{
-  margin:0 0 10px;
+.modal-content h2{
   font-family:Audiowide;
+  font-size:18px;
   color:var(--accent);
 }
-.popup .number{
-  background:color-mix(in srgb, var(--bg) 70%, #fff 30%);
-  padding:10px;
-  border-radius:10px;
+.modal-content .number{
+  margin-top:8px;
   font-family:monospace;
-  margin:10px 0;
+  background:color-mix(in srgb, var(--bg) 70%, #fff 30%);
+  padding:8px 10px;
+  border-radius:8px;
   user-select:all;
-}
-.popup .btn{
-  margin-top:10px;
-  width:100%;
 }
 </style>
 </head>
@@ -202,38 +200,43 @@ body{
       <div class="marquee" id="mq"></div>
     </div>
     <div class="card">
-      <div class="logo">
-        <img id="danaLogo" alt="DANA">
+      <div class="card-left">
+        <div class="logo"><img id="danaLogo" alt="DANA"></div>
+        <div class="name" id="paymentName"></div>
       </div>
-      <div class="name" id="paymentName"></div>
       <button class="btn primary" id="detailBtn">Detail</button>
     </div>
     <button class="btn chat" id="waBtn">💬 Chat Admin</button>
     <div class="footer">Pembayaran manual — kirim bukti ke admin setelah transfer.</div>
   </div>
-  <div class="toast" id="toast">Disalin ✅</div>
 
-  <!-- Popup -->
-  <div class="popup-overlay" id="popupOverlay">
-    <div class="popup">
-      <h3 id="popupTitle"></h3>
-      <div class="number" id="popupNumber"></div>
-      <button class="btn primary" id="copyBtn">Salin Nomor</button>
-      <button class="btn" id="closePopup">Tutup</button>
+  <div class="modal" id="detailModal">
+    <div class="modal-content">
+      <h2 id="modalTitle"></h2>
+      <div class="number" id="walletNumber"></div>
+      <div style="margin-top:12px;">
+        <button class="btn primary" id="copyBtn">Salin Nomor</button>
+      </div>
     </div>
   </div>
 
-<script>
-const DANA_NUMBER = "085134380708";
-const ADMIN_WA    = "6285134380708";
-const SHOP_NAME   = "RYNZZ SHOP";
-const DANA_LOGO   = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGglzp3pi04sdTe7teWwIj3abbA0HHqwYcxwzXVWi5ueYhk_MwQge3tE8&s=10";
-const MARQUEE_TEXT = `Selamat datang di ${SHOP_NAME} • Pembayaran via DANA • Pastikan nominal & nomor tujuan benar • Simpan bukti transfer • Terima kasih!`;
+  <div class="toast" id="toast">Disalin ✅</div>
 
-document.getElementById('shopName').textContent = SHOP_NAME;
-document.getElementById('paymentName').textContent = "DANA";
-document.getElementById('danaLogo').src = DANA_LOGO;
-document.getElementById('mq').textContent = MARQUEE_TEXT;
+<script>
+const DATA = {
+  shopName: "RYNZZ SHOP",
+  danaNumber: "085134380708",
+  adminWA: "6285134380708",
+  paymentName: "DANA",
+  danaLogo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGglzp3pi04sdTe7teWwIj3abbA0HHqwYcxwzXVWi5ueYhk_MwQge3tE8&s=10",
+  marqueeText: "Selamat datang di RYNZZ SHOP • Pembayaran via DANA • Pastikan nominal & nomor tujuan benar • Simpan bukti transfer • Terima kasih!"
+};
+
+// Set data ke elemen
+document.getElementById('shopName').textContent = DATA.shopName;
+document.getElementById('paymentName').textContent = DATA.paymentName;
+document.getElementById('danaLogo').src = DATA.danaLogo;
+document.getElementById('mq').textContent = DATA.marqueeText;
 
 // Clock
 function updateClock(){
@@ -246,32 +249,34 @@ setInterval(updateClock, 1000); updateClock();
 
 // Toast
 const toast = document.getElementById('toast');
-function showToast(msg="Disalin ✅"){
+function showToast(msg){
   toast.textContent = msg;
   toast.classList.add('show');
   setTimeout(()=> toast.classList.remove('show'), 2000);
 }
 
-// Popup
-const popupOverlay = document.getElementById('popupOverlay');
+// Modal
+const modal = document.getElementById('detailModal');
 document.getElementById('detailBtn').addEventListener('click', ()=>{
-  document.getElementById('popupTitle').textContent = "Akun DANA";
-  document.getElementById('popupNumber').textContent = DANA_NUMBER;
-  popupOverlay.style.display = 'flex';
+  document.getElementById('modalTitle').textContent = DATA.paymentName;
+  document.getElementById('walletNumber').textContent = DATA.danaNumber;
+  modal.style.display = 'flex';
 });
-document.getElementById('closePopup').addEventListener('click', ()=>{
-  popupOverlay.style.display = 'none';
+modal.addEventListener('click', e=>{
+  if(e.target === modal) modal.style.display = 'none';
 });
+
+// Copy button
 document.getElementById('copyBtn').addEventListener('click', ()=>{
-  navigator.clipboard.writeText(DANA_NUMBER)
+  navigator.clipboard.writeText(DATA.danaNumber)
     .then(()=> showToast('Nomor DANA disalin'))
     .catch(()=> showToast('Gagal menyalin'));
 });
 
-// WA Button
+// Chat admin
 document.getElementById('waBtn').addEventListener('click', ()=>{
-  const text = encodeURIComponent(`Halo ${SHOP_NAME}, saya sudah transfer via DANA ke nomor ${DANA_NUMBER}. Mohon dicek ya.`);
-  window.location.href = `https://wa.me/${ADMIN_WA}?text=${text}`;
+  const text = encodeURIComponent(`Halo ${DATA.shopName}, saya sudah transfer via DANA ke nomor ${DATA.danaNumber}. Mohon dicek ya.`);
+  window.location.href = `https://wa.me/${DATA.adminWA}?text=${text}`;
 });
 </script>
 </body>
