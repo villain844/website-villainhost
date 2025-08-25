@@ -1,283 +1,187 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>RYNZZ SHOP — Payment DANA</title>
-<link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-<meta id="metaThemeColor" name="theme-color" content="#0b1220">
-<style>
-:root{
-  --bg:#0b1220;
-  --card:#0f172a;
-  --text:#eaf6ff;
-  --muted:#9db7c9;
-  --accent:#00aaff;
-  --accent-2:#7cc7ff;
-  --rail:#0e2035;
-  --border:rgba(255,255,255,.08);
-  --shadow: 0 10px 30px rgba(0,0,0,.25);
-}
-*{box-sizing:border-box}
-html,body{height:100%;margin:0}
-body{
-  font-family:Poppins,system-ui,Arial;
-  background:var(--bg);
-  color:var(--text);
-  min-height:100svh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-.app{
-  width:100%;
-  max-width:480px;
-  height:100svh;
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-  padding:14px;
-}
-.topbar{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-.brand{
-  display:flex;align-items:center;gap:10px;
-}
-.brand .dot{
-  width:10px;height:10px;border-radius:8px;
-  background:linear-gradient(180deg,var(--accent),var(--accent-2));
-  box-shadow:0 0 12px var(--accent);
-}
-.brand .title{
-  font-family:Audiowide,system-ui;
-  letter-spacing:.5px;
-  font-size:16px;
-}
-.clock{
-  font-family:Audiowide,monospace;
-  font-size:28px;
-  line-height:1;
-  color:var(--accent);
-  text-shadow:0 0 10px color-mix(in srgb, var(--accent) 35%, transparent);
-  text-align:center;
-  padding:8px 10px;
-  border:1px solid var(--border);
-  border-radius:12px;
-  background:color-mix(in srgb, var(--card) 70%, transparent);
-  backdrop-filter:saturate(120%) blur(6px);
-}
-.rail{
-  border:1px dashed var(--border);
-  background:var(--rail);
-  border-radius:12px;
-  padding:8px 0;
-  overflow:hidden;
-}
-.marquee{
-  white-space:nowrap;
-  display:inline-block;
-  padding-left:100%;
-  animation:marq 14s linear infinite;
-  font-family:Audiowide;
-  color:var(--accent-2);
-}
-@keyframes marq{
-  0%{transform:translateX(0)}
-  100%{transform:translateX(-100%)}
-}
-.card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:16px;
-  box-shadow:var(--shadow);
-  padding:16px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:14px;
-}
-.card-left{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-.logo{
-  width:50px;height:50px;border-radius:12px;
-  display:grid;place-items:center;
-  border:1px solid var(--border);
-  background:linear-gradient(180deg, color-mix(in srgb, var(--bg) 70%, #fff 30%), var(--card));
-}
-.logo img{width:32px;height:32px;object-fit:contain}
-.name{
-  font-family:Audiowide;
-  font-size:16px;
-  letter-spacing:.3px;
-  color:var(--accent);
-}
-.btn{
-  padding:10px 12px;
-  border-radius:10px;
-  border:1px solid var(--border);
-  background:transparent;
-  color:var(--text);
-  font-weight:700;
-  cursor:pointer;
-}
-.btn.primary{
-  background:linear-gradient(90deg,var(--accent),var(--accent-2));
-  color:#071118;border:none;
-}
-.btn.chat{
-  background:linear-gradient(180deg,#0094ff,#006bb3);
-  color:white;
-  box-shadow:0 4px 0 #004a80;
-  border:none;
-  font-weight:700;
-}
-.btn.chat:active{
-  transform:translateY(2px);
-  box-shadow:0 2px 0 #004a80;
-}
-.footer{
-  margin-top:auto;
-  text-align:center;
-  font-size:12px;
-  color:var(--muted);
-}
-.toast{
-  position:fixed;left:50%;transform:translateX(-50%);
-  top:-80px;opacity:0;
-  transition:top .35s ease, opacity .3s;
-  padding:12px 16px;border-radius:10px;
-  background:var(--accent);color:#08131b;font-weight:800;
-  z-index:50;
-  box-shadow:0 8px 22px color-mix(in srgb, var(--accent) 35%, transparent);
-}
-.toast.show{top:16px;opacity:1}
-.modal{
-  position:fixed;top:0;left:0;width:100%;height:100%;
-  background:rgba(0,0,0,.6);display:none;
-  justify-content:center;align-items:center;
-  z-index:100;
-}
-.modal-content{
-  background:var(--card);
-  padding:20px;
-  border-radius:14px;
-  max-width:320px;
-  width:90%;
-  text-align:center;
-  border:1px solid var(--border);
-}
-.modal-content h2{
-  font-family:Audiowide;
-  font-size:18px;
-  color:var(--accent);
-}
-.modal-content .number{
-  margin-top:8px;
-  font-family:monospace;
-  background:color-mix(in srgb, var(--bg) 70%, #fff 30%);
-  padding:8px 10px;
-  border-radius:8px;
-  user-select:all;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment RYNZZ</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #000;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+        main, section {
+            background: #1a0000;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #ff0000;
+            box-shadow: 0 0 15px #ff0000;
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 20px;
+        }
+        h1, h2 {
+            color: #ff0000;
+            text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 20px #ff0000;
+        }
+        a {
+            color: #ff0000;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            border: 1px solid #ff0000;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 5px #ff0000;
+        }
+        a:hover {
+            background-color: #ff0000;
+            color: #000;
+            box-shadow: 0 0 10px #ff0000;
+        }
+        #paymentPage div {
+            margin: 20px 0;
+        }
+        footer {
+            margin-top: auto;
+            font-size: 12px;
+            color: #ff0000;
+            text-shadow: 0 0 5px #ff0000;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 300px;
+            text-align: center;
+            position: relative;
+            border-radius: 8px;
+        }
+        .modal-content img {
+            width: 100%;
+        }
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-  <div class="app">
-    <div class="topbar">
-      <div class="brand">
-        <div class="dot"></div>
-        <div class="title" id="shopName"></div>
-      </div>
+
+    <main id="mainPage">
+        <h1>Website by RYNZZ</h1>
+        <h2>Payment RYNZZ</h2>
+        <p>Terima kasih sudah menggunakan layanan kami!</p>
+        <a href="#payment" id="goToPayment">Go to Payment</a>
+    </main>
+
+    <section id="paymentPage" style="display: none;">
+        <h2>Pembayaran RYNZZ</h2>
+        <p>Pilih metode pembayaran berikut:</p>
+
+        <div>
+            <a href="#qrcode" id="showQr">QR Code Pembayaran</a>
+        </div>
+
+        <h3>E-WALLET</h3>
+        <p>Dana: 0895329077845</p>
+        <p>Gopay: 0895329077845</p>
+
+        <div>
+            <a href="https://wa.me/6289515622554?text=Halo+RYNZZ">WhatsApp</a>
+            <a href="#" id="goBack">Back</a>
+        </div>
+    </section>
+
+    <div id="qrModal" style="display: none;">
+        <div class="modal-content">
+            <span id="closeQr" class="close">&times;</span>
+            <h2>QR Code Zoomed</h2>
+            <img src="qr-code.jpg" alt="QR Code Pembayaran">
+        </div>
     </div>
-    <div class="clock" id="clock">--:--:--</div>
-    <div class="rail">
-      <div class="marquee" id="mq"></div>
-    </div>
-    <div class="card">
-      <div class="card-left">
-        <div class="logo"><img id="danaLogo" alt="DANA"></div>
-        <div class="name" id="paymentName"></div>
-      </div>
-      <button class="btn primary" id="detailBtn">Detail</button>
-    </div>
-    <button class="btn chat" id="waBtn">💬 Chat Admin</button>
-    <div class="footer">Pembayaran manual — kirim bukti ke admin setelah transfer.</div>
-  </div>
 
-  <div class="modal" id="detailModal">
-    <div class="modal-content">
-      <h2 id="modalTitle"></h2>
-      <div class="number" id="walletNumber"></div>
-      <div style="margin-top:12px;">
-        <button class="btn primary" id="copyBtn">Salin Nomor</button>
-      </div>
-    </div>
-  </div>
+    <footer>
+        <p>© 2025 FR3 AI - All Rights Reserved</p>
+    </footer>
 
-  <div class="toast" id="toast">Disalin ✅</div>
+    <script>
+        const mainPage = document.getElementById('mainPage');
+        const paymentPage = document.getElementById('paymentPage');
+        const goToPayment = document.getElementById('goToPayment');
+        const goBack = document.getElementById('goBack');
+        const showQr = document.getElementById('showQr');
+        const qrModal = document.getElementById('qrModal');
+        const closeQr = document.getElementById('closeQr');
 
-<script>
-const DATA = {
-  shopName: "RYNZZ SHOP",
-  danaNumber: "085134380708",
-  adminWA: "6285134380708",
-  paymentName: "DANA",
-  danaLogo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGglzp3pi04sdTe7teWwIj3abbA0HHqwYcxwzXVWi5ueYhk_MwQge3tE8&s=10",
-  marqueeText: "Selamat datang di RYNZZ SHOP • Pembayaran via DANA • Pastikan nominal & nomor tujuan benar • Simpan bukti transfer • Terima kasih!"
-};
+        goToPayment.addEventListener('click', (e) => {
+            e.preventDefault();
+            mainPage.style.display = 'none';
+            paymentPage.style.display = 'block';
+            window.location.hash = 'payment';
+        });
 
-// Set data ke elemen
-document.getElementById('shopName').textContent = DATA.shopName;
-document.getElementById('paymentName').textContent = DATA.paymentName;
-document.getElementById('danaLogo').src = DATA.danaLogo;
-document.getElementById('mq').textContent = DATA.marqueeText;
+        goBack.addEventListener('click', (e) => {
+            e.preventDefault();
+            mainPage.style.display = 'block';
+            paymentPage.style.display = 'none';
+            window.location.hash = '';
+        });
 
-// Clock
-function updateClock(){
-  const now = new Date();
-  const opts = { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false };
-  document.getElementById('clock').textContent =
-    new Intl.DateTimeFormat('id-ID', opts).format(now);
-}
-setInterval(updateClock, 1000); updateClock();
+        showQr.addEventListener('click', (e) => {
+            e.preventDefault();
+            qrModal.style.display = 'block';
+        });
 
-// Toast
-const toast = document.getElementById('toast');
-function showToast(msg){
-  toast.textContent = msg;
-  toast.classList.add('show');
-  setTimeout(()=> toast.classList.remove('show'), 2000);
-}
+        closeQr.addEventListener('click', () => {
+            qrModal.style.display = 'none';
+        });
 
-// Modal
-const modal = document.getElementById('detailModal');
-document.getElementById('detailBtn').addEventListener('click', ()=>{
-  document.getElementById('modalTitle').textContent = DATA.paymentName;
-  document.getElementById('walletNumber').textContent = DATA.danaNumber;
-  modal.style.display = 'flex';
-});
-modal.addEventListener('click', e=>{
-  if(e.target === modal) modal.style.display = 'none';
-});
+        window.addEventListener('click', (e) => {
+            if (e.target == qrModal) {
+                qrModal.style.display = 'none';
+            }
+        });
 
-// Copy button
-document.getElementById('copyBtn').addEventListener('click', ()=>{
-  navigator.clipboard.writeText(DATA.danaNumber)
-    .then(()=> showToast('Nomor DANA disalin'))
-    .catch(()=> showToast('Gagal menyalin'));
-});
+        // Handle initial page load based on hash
+        if(window.location.hash === '#payment') {
+            mainPage.style.display = 'none';
+            paymentPage.style.display = 'block';
+        }
+    </script>
 
-// Chat admin
-document.getElementById('waBtn').addEventListener('click', ()=>{
-  const text = encodeURIComponent(`Halo ${DATA.shopName}, saya sudah transfer via DANA ke nomor ${DATA.danaNumber}. Mohon dicek ya.`);
-  window.location.href = `https://wa.me/${DATA.adminWA}?text=${text}`;
-});
-</script>
 </body>
 </html>
