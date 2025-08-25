@@ -3,185 +3,338 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment RYNZZ</title>
+    <title>Pembayaran Panel & SC</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #000;
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
             color: #fff;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            text-align: center;
+            line-height: 1.6;
         }
-        main, section {
-            background: #1a0000;
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
             padding: 20px;
+            background-color: #2c2c2c;
             border-radius: 8px;
-            border: 1px solid #ff0000;
-            box-shadow: 0 0 15px #ff0000;
+        }
+        h1, h2, h3 {
+            color: #4dd0e1;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        input[type="tel"],
+        input[type="time"],
+        input[type="date"],
+        select {
             width: 100%;
-            max-width: 400px;
-            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #555;
+            border-radius: 4px;
+            background-color: #333;
+            color: #fff;
         }
-        h1, h2 {
-            color: #ff0000;
-            text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 20px #ff0000;
-        }
-        a {
-            color: #ff0000;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 10px;
-            padding: 10px 20px;
-            border: 1px solid #ff0000;
-            border-radius: 5px;
-            transition: all 0.3s ease;
-            text-shadow: 0 0 5px #ff0000;
-        }
-        a:hover {
-            background-color: #ff0000;
-            color: #000;
-            box-shadow: 0 0 10px #ff0000;
-        }
-        #paymentPage div {
+        .total {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #ffab40;
             margin: 20px 0;
         }
-        footer {
-            margin-top: auto;
-            font-size: 12px;
-            color: #ff0000;
-            text-shadow: 0 0 5px #ff0000;
+        .tabs {
+            display: flex;
+            margin-bottom: 15px;
         }
-        .modal {
+        .tab-link {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #333;
+            border: none;
+            color: #fff;
+            border-radius: 4px 4px 0 0;
+            margin-right: 5px;
+        }
+        .tab-link.active {
+            background-color: #4dd0e1;
+            color: #000;
+        }
+        .tab-content {
             display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
-            padding-top: 60px;
-        }
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
             padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 300px;
-            text-align: center;
-            position: relative;
-            border-radius: 8px;
+            background-color: #333;
+            border-radius: 0 4px 4px 4px;
         }
-        .modal-content img {
-            width: 100%;
+        .tab-content.active {
+            display: block;
         }
-        .close {
-            position: absolute;
-            top: 10px;
-            right: 25px;
-            color: #aaa;
-            font-size: 28px;
+        .copy-btn, .actions button {
+            background-color: #4dd0e1;
+            color: #000;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
             font-weight: bold;
         }
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
+        .notes {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #333;
+            border-left: 3px solid #4dd0e1;
+        }
+        .actions {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <h1>Pembayaran Panel & SC</h1>
+        <p>Silakan lengkapi form pembayaran berikut</p>
 
-    <main id="mainPage">
-        <h1>Website by RYNZZ</h1>
-        <h2>Payment RYNZZ</h2>
-        <p>Terima kasih sudah menggunakan layanan kami!</p>
-        <a href="#payment" id="goToPayment">Go to Payment</a>
-    </main>
+        <form id="orderForm">
+            <div class="form-group">
+                <label for="orderId">ORDER ID:</label>
+                <input type="text" id="orderId" name="orderId" value="KENZSTOREID-ABCDE" readonly>
+            </div>
+            <div class="form-group">
+                <label for="name">NAMA:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="item">BARANG:</label>
+                <select id="item" name="item" required>
+                    <option value="">-- Pilih Kategori --</option>
+                    <option value="panel">Panel</option>
+                    <option value="sc">Script</option>
+                </select>
+            </div>
+            <div class="form-group" id="panelTypeGroup" style="display: none;">
+                <label for="panelType">TIPE PANEL:</label>
+                <select id="panelType" name="panelType">
+                    <option value="public">Public</option>
+                    <option value="private">Private</option>
+                </select>
+            </div>
+            <div class="form-group" id="panelChoiceGroup" style="display: none;">
+                <label for="panelChoice">PILIHAN PANEL:</label>
+                <select id="panelChoice" name="panelChoice">
+                    <option value="1" data-price-public="1000" data-price-private="2000">1GB - Rp 1.000 (Public) / Rp 2.000 (Private)</option>
+                </select>
+            </div>
+            <div class="form-group" id="scTypeGroup" style="display: none;">
+                <label for="scType">TIPE SC:</label>
+                <select id="scType" name="scType">
+                    <option value="undefined">SC UNDEFINED BUG</option>
+                    <option value="lelouch">SC LELOUCH INFINITY</option>
+                </select>
+            </div>
+            <div class="form-group" id="scUndefinedGroup" style="display: none;">
+                <label for="scUndefined">SC UNDEFINED BUG:</label>
+                <select id="scUndefined" name="scUndefined">
+                    <option value="1" data-price="3000">V1 - Rp 3.000</option>
+                </select>
+            </div>
+            <div class="form-group" id="scLelouchGroup" style="display: none;">
+                <label for="scLelouch">SC LELOUCH INFINITY:</label>
+                <select id="scLelouch" name="scLelouch">
+                    <option value="1" data-price="3000">V1 - Rp 3.000</option>
+                </select>
+            </div>
 
-    <section id="paymentPage" style="display: none;">
-        <h2>Pembayaran RYNZZ</h2>
-        <p>Pilih metode pembayaran berikut:</p>
+            <div class="total">
+                Total: <span id="totalPrice">Rp 0</span>
+            </div>
 
-        <div>
-            <a href="#qrcode" id="showQr">QR Code Pembayaran</a>
+            <div class="form-group">
+                <label for="whatsapp">NOMOR WHATSAPP:</label>
+                <input type="tel" id="whatsapp" name="whatsapp" placeholder="Hanya angka, tanpa tanda + atau spasi" required>
+            </div>
+        </form>
+
+        <div class="payment-methods">
+            <h2>METODE PEMBAYARAN:</h2>
+            <div class="tabs">
+                <button class="tab-link active" data-tab="dana">DANA</button>
+                <button class="tab-link" data-tab="ovo">OVO</button>
+                <button class="tab-link" data-tab="gopay">GoPay</button>
+                <button class="tab-link" data-tab="qris">QRIS</button>
+            </div>
+
+            <div id="dana" class="tab-content active">
+                <p>Silakan transfer ke nomor DANA berikut:</p>
+                <p class="number">085194715198</p>
+                <button class="copy-btn">Salin Nomor</button>
+            </div>
+            <div id="ovo" class="tab-content">
+                <p>Silakan transfer ke nomor OVO berikut:</p>
+                <p class="number">085194715198</p>
+                <button class="copy-btn">Salin Nomor</button>
+            </div>
+            <div id="gopay" class="tab-content">
+                <p>Silakan transfer ke nomor GoPay berikut:</p>
+                <p class="number">085194715198</p>
+                <button class="copy-btn">Salin Nomor</button>
+            </div>
+            <div id="qris" class="tab-content">
+                <p>Silakan scan kode QR berikut untuk pembayaran:</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/1200px-QR_code_for_mobile_English_Wikipedia.svg.png" alt="QR Code" width="200">
+                <p>Scan QR code menggunakan aplikasi e-wallet atau mobile banking</p>
+            </div>
         </div>
 
-        <h3>E-WALLET</h3>
-        <p>Dana: 0895329077845</p>
-        <p>Gopay: 0895329077845</p>
-
-        <div>
-            <a href="https://wa.me/6289515622554?text=Halo+RYNZZ">WhatsApp</a>
-            <a href="#" id="goBack">Back</a>
+        <div class="payment-details">
+            <div class="form-group">
+                <label for="paymentTime">WAKTU PEMBAYARAN:</label>
+                <input type="time" id="paymentTime" name="paymentTime" required>
+            </div>
+            <div class="form-group">
+                <label for="paymentDate">TANGGAL PEMBAYARAN:</label>
+                <input type="date" id="paymentDate" name="paymentDate" required>
+            </div>
         </div>
-    </section>
 
-    <div id="qrModal" style="display: none;">
-        <div class="modal-content">
-            <span id="closeQr" class="close">&times;</span>
-            <h2>QR Code Zoomed</h2>
-            <img src="qr-code.jpg" alt="QR Code Pembayaran">
+        <div class="notes">
+            <h3>Catatan Penting:</h3>
+            <ol>
+                <li>Lakukan transfer sesuai nominal yang tertera</li>
+                <li>jika tidak sesuai admin tidak akan merespon apapun</li>
+                <li>Setelah transfer, simpan bukti pembayaran Anda</li>
+                <li>Kirim bukti pembayaran via WhatsApp atau Telegram</li>
+                <li>Order ID akan digunakan untuk verifikasi pembayaran</li>
+                <li>Respon akan diberikan dalam waktu 2x24 jam</li>
+            </ol>
+        </div>
+
+        <div class="actions">
+            <button id="sendWhatsapp">Send Via WhatsApp</button>
+            <button id="sendTelegram">Send Via Telegram</button>
         </div>
     </div>
 
-    <footer>
-        <p>© 2025 FR3 AI - All Rights Reserved</p>
-    </footer>
-
     <script>
-        const mainPage = document.getElementById('mainPage');
-        const paymentPage = document.getElementById('paymentPage');
-        const goToPayment = document.getElementById('goToPayment');
-        const goBack = document.getElementById('goBack');
-        const showQr = document.getElementById('showQr');
-        const qrModal = document.getElementById('qrModal');
-        const closeQr = document.getElementById('closeQr');
+    document.addEventListener('DOMContentLoaded', () => {
+        // a. Tabbed payment methods
+        const tabs = document.querySelectorAll('.tab-link');
+        const tabContents = document.querySelectorAll('.tab-content');
 
-        goToPayment.addEventListener('click', (e) => {
-            e.preventDefault();
-            mainPage.style.display = 'none';
-            paymentPage.style.display = 'block';
-            window.location.hash = 'payment';
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const target = document.getElementById(tab.dataset.tab);
+
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                tabContents.forEach(c => c.classList.remove('active'));
+                target.classList.add('active');
+            });
         });
 
-        goBack.addEventListener('click', (e) => {
-            e.preventDefault();
-            mainPage.style.display = 'block';
-            paymentPage.style.display = 'none';
-            window.location.hash = '';
+        // b. "Copy Number" buttons
+        const copyButtons = document.querySelectorAll('.copy-btn');
+        copyButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const number = btn.previousElementSibling.textContent;
+                navigator.clipboard.writeText(number).then(() => {
+                    alert('Nomor berhasil disalin!');
+                }, () => {
+                    alert('Gagal menyalin nomor.');
+                });
+            });
         });
 
-        showQr.addEventListener('click', (e) => {
-            e.preventDefault();
-            qrModal.style.display = 'block';
-        });
+        // c. Dynamic dropdowns and price calculation
+        const itemSelect = document.getElementById('item');
+        const panelTypeGroup = document.getElementById('panelTypeGroup');
+        const panelChoiceGroup = document.getElementById('panelChoiceGroup');
+        const scTypeGroup = document.getElementById('scTypeGroup');
+        const scUndefinedGroup = document.getElementById('scUndefinedGroup');
+        const scLelouchGroup = document.getElementById('scLelouchGroup');
+        const totalPriceEl = document.getElementById('totalPrice');
 
-        closeQr.addEventListener('click', () => {
-            qrModal.style.display = 'none';
-        });
+        itemSelect.addEventListener('change', () => {
+            const value = itemSelect.value;
+            panelTypeGroup.style.display = value === 'panel' ? 'block' : 'none';
+            panelChoiceGroup.style.display = value === 'panel' ? 'block' : 'none';
+            scTypeGroup.style.display = value === 'sc' ? 'block' : 'none';
 
-        window.addEventListener('click', (e) => {
-            if (e.target == qrModal) {
-                qrModal.style.display = 'none';
+            // Reset and hide SC groups when item changes
+            scUndefinedGroup.style.display = 'none';
+            scLelouchGroup.style.display = 'none';
+            if(value === 'sc') {
+                document.getElementById('scType').dispatchEvent(new Event('change'));
             }
+
+            updateTotalPrice();
         });
 
-        // Handle initial page load based on hash
-        if(window.location.hash === '#payment') {
-            mainPage.style.display = 'none';
-            paymentPage.style.display = 'block';
-        }
-    </script>
+        document.getElementById('scType').addEventListener('change', () => {
+            const value = document.getElementById('scType').value;
+            scUndefinedGroup.style.display = value === 'undefined' ? 'block' : 'none';
+            scLelouchGroup.style.display = value === 'lelouch' ? 'block' : 'none';
+            updateTotalPrice();
+        });
 
+        document.getElementById('panelType').addEventListener('change', updateTotalPrice);
+        document.getElementById('panelChoice').addEventListener('change', updateTotalPrice);
+        document.getElementById('scUndefined').addEventListener('change', updateTotalPrice);
+        document.getElementById('scLelouch').addEventListener('change', updateTotalPrice);
+
+        function updateTotalPrice() {
+            let total = 0;
+            const item = itemSelect.value;
+
+            if (item === 'panel') {
+                const panelType = document.getElementById('panelType').value;
+                const panelChoice = document.getElementById('panelChoice').querySelector('option:checked');
+                if (panelChoice) {
+                    total = parseInt(panelType === 'public' ? panelChoice.dataset.pricePublic : panelChoice.dataset.pricePrivate);
+                }
+            } else if (item === 'sc') {
+                const scType = document.getElementById('scType').value;
+                if (scType === 'undefined') {
+                    const scChoice = document.getElementById('scUndefined').querySelector('option:checked');
+                    if(scChoice) total = parseInt(scChoice.dataset.price);
+                } else if (scType === 'lelouch') {
+                    const scChoice = document.getElementById('scLelouch').querySelector('option:checked');
+                    if(scChoice) total = parseInt(scChoice.dataset.price);
+                }
+            }
+
+            totalPriceEl.textContent = `Rp ${total.toLocaleString('id-ID')}`;
+        }
+
+        // d. "Send to WhatsApp/Telegram" buttons
+        const sendWhatsappBtn = document.getElementById('sendWhatsapp');
+        const sendTelegramBtn = document.getElementById('sendTelegram');
+
+        sendWhatsappBtn.addEventListener('click', () => {
+            const name = document.getElementById('name').value;
+            const whatsapp = document.getElementById('whatsapp').value;
+            const total = totalPriceEl.textContent;
+            const orderId = document.getElementById('orderId').value;
+
+            if(!name || !whatsapp) {
+                alert('Nama dan Nomor WhatsApp harus diisi!');
+                return;
+            }
+
+            const message = `Halo, saya ingin konfirmasi pembayaran.\n\nORDER ID: ${orderId}\nNama: ${name}\nTotal: ${total}\nNomor WA: ${whatsapp}`;
+            const whatsappUrl = `https://wa.me/6285194715198?text=${encodeURIComponent(message)}`; // Using the number from the page
+            window.open(whatsappUrl, '_blank');
+        });
+
+        sendTelegramBtn.addEventListener('click', () => {
+             alert('Fitur Telegram belum tersedia.');
+        });
+    });
+    </script>
 </body>
 </html>
