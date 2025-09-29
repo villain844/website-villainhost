@@ -3,97 +3,102 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Panel</title>
+<title>Login</title>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
 <style>
-body{font-family:Poppins,sans-serif;margin:0;padding:1rem;background:#f8fafc;}
-header{font-size:1.2rem;font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem;}
-.card{background:#fff;border-radius:.75rem;padding:1rem;margin-bottom:1rem;box-shadow:0 2px 8px rgba(0,0,0,.05);}
-.total{text-align:center;font-size:1.5rem;font-weight:600;}
-.form-group{display:flex;gap:.5rem;}
-.form-group input{flex:1;padding:.6rem;border:1px solid #d1d5db;border-radius:.5rem;}
-.form-group button{padding:.6rem 1.2rem;background:#3b82f6;color:#fff;border:none;border-radius:.5rem;cursor:pointer;}
-.list{max-height:300px;overflow-y:auto;}
-.list-item{display:flex;justify-content:space-between;padding:.5rem 0;border-bottom:1px solid #e5e7eb;}
-.list-item button{background:#ef4444;color:#fff;border:none;padding:.3rem .6rem;border-radius:.3rem;cursor:pointer;}
+body {
+  font-family: 'Poppins', sans-serif;
+  display:flex; justify-content:center; align-items:center;
+  min-height:100vh; margin:0;
+  background-color:#fff;
+  background-size:cover; background-position:center;
+}
+.login-box {
+  background:#fff; padding:2rem; border-radius:1rem;
+  box-shadow:0 4px 20px rgba(0,0,0,0.1); width:100%; max-width:380px;
+}
+.logo { text-align:center; margin-bottom:1.5rem; font-size:1.5rem; font-weight:600; display:flex; align-items:center; justify-content:center; gap:.5rem; }
+.logo i { color:#3b82f6; }
+.form-group { position:relative; margin-bottom:1.25rem; }
+.form-group input {
+  width:100%;
+  padding:0.75rem 2.5rem;
+  border:1px solid #d1d5db;
+  border-radius:0.5rem;
+  font-size:0.95rem;
+}
+.input-icon {
+  position:absolute;
+  left:0.9rem;
+  top:50%;
+  transform:translateY(-50%);
+  color:#9ca3af;
+}
+.toggle-password {
+  position:absolute;
+  right:0.9rem;
+  top:50%;
+  transform:translateY(-50%);
+  color:#9ca3af;
+  cursor:pointer;
+}
+button {
+  width:100%; padding:0.75rem; border:none; border-radius:0.5rem;
+  background:#3b82f6; color:#fff; font-size:1rem; font-weight:600;
+  cursor:pointer; display:flex; align-items:center; justify-content:center; gap:.5rem;
+}
+button:hover { background:#2563eb; }
+.footer { margin-top:1.5rem; text-align:center; font-size:.85rem; }
+.footer a { color:#3b82f6; text-decoration:none; font-weight:500; display:inline-flex; align-items:center; gap:.4rem; }
 </style>
 </head>
 <body>
-<header><i class="fas fa-database"></i><span id="title">Admin Panel</span></header>
-
-<div class="card">
-  <div>Total Numbers</div>
-  <div class="total" id="totalCount">0</div>
-</div>
-
-<div class="card">
+<div class="login-box">
+  <div class="logo"><i class="fas fa-database"></i> <span id="title">Database</span></div>
   <div class="form-group">
-    <input type="text" id="newNumber" placeholder="Masukkan nomor baru...">
-    <button id="addBtn"><i class="fas fa-plus"></i> Tambah</button>
+    <i class="fas fa-lock input-icon"></i>
+    <input type="password" id="password" placeholder="Masukkan password" required>
+    <i class="fas fa-eye toggle-password" id="togglePassword"></i>
+  </div>
+  <button id="loginBtn"><i class="fas fa-sign-in-alt"></i> Masuk</button>
+  <div class="footer">
+    <a id="contactDev" href="#" target="_blank"><i class="fab fa-whatsapp"></i> Contact Developer</a>
   </div>
 </div>
 
-<div class="card">
-  <div class="form-group">
-    <input type="text" id="search" placeholder="Cari nomor...">
-  </div>
-</div>
-
-<div class="card list" id="listContainer"></div>
-
-<script src="../settings.js"></script>
+<script src="settings.js"></script>
 <script>
-const rawURL = `https://raw.githubusercontent.com/${settings.owner}/${settings.repo}/main/${settings.fileDb}`;
-let filedb = [];
+// Set title dan contact developer
+document.getElementById("title").textContent = settings.title;
+document.getElementById("contactDev").href = "https://wa.me/" + settings.adminWa;
+if(settings.background) document.body.style.backgroundImage = `url('${settings.background}')`;
 
-async function fetchData(){
-  try{
-    const res = await fetch(rawURL);
-    filedb = await res.json();
-    renderList();
-  }catch(e){
-    console.error(e);
-  }
-}
-
-const listEl=document.getElementById("listContainer");
-const totalEl=document.getElementById("totalCount");
-const searchEl=document.getElementById("search");
-
-function renderList(filter=""){
-  listEl.innerHTML="";
-  const filtered=filedb.filter(num=>num.includes(filter));
-  filtered.forEach(num=>{
-    const row=document.createElement("div");
-    row.className="list-item";
-    row.innerHTML=`<span>${num}</span><button data-num="${num}"><i class="fas fa-trash"></i></button>`;
-    listEl.appendChild(row);
-  });
-  totalEl.textContent=filtered.length;
-}
-
-document.getElementById("addBtn").onclick=()=>{
-  const val=document.getElementById("newNumber").value.trim();
-  if(val && !filedb.includes(val)){
-    filedb.push(val);
-    renderList(searchEl.value.trim());
-  }
-};
-
-searchEl.addEventListener("input", e=>{
-  renderList(e.target.value.trim());
-});
-
-listEl.addEventListener("click", e=>{
-  if(e.target.closest("button")){
-    const num=e.target.closest("button").dataset.num;
-    const idx=filedb.indexOf(num);
-    if(idx>-1){ filedb.splice(idx,1); renderList(searchEl.value.trim()); }
+// Toggle password
+const pwd = document.getElementById("password");
+const toggle = document.getElementById("togglePassword");
+toggle.addEventListener("click", ()=>{
+  if(pwd.type==="password"){
+    pwd.type="text";
+    toggle.classList.replace("fa-eye","fa-eye-slash");
+  } else {
+    pwd.type="password";
+    toggle.classList.replace("fa-eye-slash","fa-eye");
   }
 });
 
-document.getElementById("title").textContent=settings.title+" - Admin";
-fetchData();
+// Login
+document.getElementById("loginBtn").addEventListener("click", ()=>{
+  const val = pwd.value.trim();
+  if(val === settings.adminPassword) window.location.href = "admin/";
+  else if(val === settings.userPassword) window.location.href = "user/";
+  else alert("Password salah!");
+});
+
+// Enter key
+pwd.addEventListener("keypress", e=>{
+  if(e.key === "Enter") document.getElementById("loginBtn").click();
+});
 </script>
 </body>
 </html>
