@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+body{font-family:Poppins,sans-serif;margin:0;padding:1rem;background:#f8fafc;}
+header{font-size:1.2rem;font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem;}
+.card{background:#fff;border-radius:.75rem;padding:1rem;margin-bottom:1rem;box-shadow:0 2px 8px rgba(0,0,0,.05);}
+.total{text-align:center;font-size:1.5rem;font-weight:600;}
+.form-group{display:flex;gap:.5rem;}
+.form-group input{flex:1;padding:.6rem;border:1px solid #d1d5db;border-radius:.5rem;}
+.form-group button{padding:.6rem 1.2rem;background:#3b82f6;color:#fff;border:none;border-radius:.5rem;cursor:pointer;}
+.list{max-height:300px;overflow-y:auto;}
+.list-item{display:flex;justify-content:space-between;padding:.5rem 0;border-bottom:1px solid #e5e7eb;}
+.list-item button{background:#ef4444;color:#fff;border:none;padding:.3rem .6rem;border-radius:.3rem;cursor:pointer;}
+</style>
+</head>
+<body>
+<header><i class="fas fa-database"></i><span id="title">Admin Panel</span></header>
+
+<div class="card">
+  <div>Total Numbers</div>
+  <div class="total" id="totalCount">0</div>
+</div>
+
+<div class="card">
+  <div class="form-group">
+    <input type="text" id="newNumber" placeholder="Masukkan nomor baru...">
+    <button id="addBtn"><i class="fas fa-plus"></i> Tambah</button>
+  </div>
+</div>
+
+<div class="card">
+  <div class="form-group">
+    <input type="text" id="search" placeholder="Cari nomor...">
+  </div>
+</div>
+
+<div class="card list" id="listContainer"></div>
+
+<script src="../settings.js"></script>
+<script>
+const rawURL = `https://raw.githubusercontent.com/${settings.owner}/${settings.repo}/main/${settings.fileDb}`;
+let filedb = [];
+
+async function fetchData(){
+  try{
+    const res = await fetch(rawURL);
+    filedb = await res.json();
+    renderList();
+  }catch(e){
+    console.error(e);
+  }
+}
+
+const listEl=document.getElementById("listContainer");
+const totalEl=document.getElementById("totalCount");
+const searchEl=document.getElementById("search");
+
+function renderList(filter=""){
+  listEl.innerHTML="";
+  const filtered=filedb.filter(num=>num.includes(filter));
+  filtered.forEach(num=>{
+    const row=document.createElement("div");
+    row.className="list-item";
+    row.innerHTML=`<span>${num}</span><button data-num="${num}"><i class="fas fa-trash"></i></button>`;
+    listEl.appendChild(row);
+  });
+  totalEl.textContent=filtered.length;
+}
+
+document.getElementById("addBtn").onclick=()=>{
+  const val=document.getElementById("newNumber").value.trim();
+  if(val && !filedb.includes(val)){
+    filedb.push(val);
+    renderList(searchEl.value.trim());
+  }
+};
+
+searchEl.addEventListener("input", e=>{
+  renderList(e.target.value.trim());
+});
+
+listEl.addEventListener("click", e=>{
+  if(e.target.closest("button")){
+    const num=e.target.closest("button").dataset.num;
+    const idx=filedb.indexOf(num);
+    if(idx>-1){ filedb.splice(idx,1); renderList(searchEl.value.trim()); }
+  }
+});
+
+document.getElementById("title").textContent=settings.title+" - Admin";
+fetchData();
+</script>
+</body>
+</html>
