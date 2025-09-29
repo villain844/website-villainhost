@@ -14,7 +14,7 @@ body {
   align-items:center;
   min-height:100vh;
   margin:0;
-  background-color:#ffffff;
+  background:#fff;
   background-size:cover;
   background-position:center;
 }
@@ -26,7 +26,16 @@ body {
   width:100%;
   max-width:380px;
 }
-.logo { text-align:center; margin-bottom:1.5rem; font-size:1.5rem; font-weight:600; color:#1e293b; display:flex; align-items:center; justify-content:center; gap:.5rem; }
+.logo {
+  text-align:center;
+  margin-bottom:1.5rem;
+  font-size:1.5rem;
+  font-weight:600;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:.5rem;
+}
 .logo i { color:#3b82f6; }
 .form-group { position:relative; margin-bottom:1.25rem; }
 .form-group input { width:100%; padding:.75rem 2.5rem; border:1px solid #d1d5db; border-radius:.5rem; font-size:.95rem; }
@@ -57,16 +66,16 @@ button:hover { background:#2563eb; }
 
 <script src="settings.js"></script>
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-  if(settings.background) document.body.style.backgroundImage = `url('${settings.background}')`;
-  document.getElementById("title").textContent = settings.title || "Database";
-  document.getElementById("contactDev").href = "https://wa.me/" + (settings.adminWa || "");
-});
+// Set background dan judul
+if(settings.background) document.body.style.backgroundImage = `url('${settings.background}')`;
+document.getElementById("title").textContent = settings.title;
+document.getElementById("contactDev").href = "https://wa.me/" + settings.adminWa;
 
+// Toggle password
 const pwd = document.getElementById("password");
 const toggle = document.getElementById("togglePassword");
-toggle.addEventListener("click", () => {
-  if(pwd.type === "password"){
+toggle.addEventListener("click", ()=>{
+  if(pwd.type==="password"){
     pwd.type="text";
     toggle.classList.replace("fa-eye","fa-eye-slash");
   } else {
@@ -75,15 +84,17 @@ toggle.addEventListener("click", () => {
   }
 });
 
-document.getElementById("loginBtn").addEventListener("click", () => {
+// Login
+document.getElementById("loginBtn").addEventListener("click", ()=>{
   const val = pwd.value.trim();
-  if(val === settings.adminPassword) location.href = "admin/";
-  else if(val === settings.userPassword) location.href = "user/";
+  if(val===settings.adminPassword) location.href="admin/";
+  else if(val===settings.userPassword) location.href="user/";
   else alert("Password salah!");
 });
 
+// Enter key
 pwd.addEventListener("keypress", e=>{
-  if(e.key === "Enter") document.getElementById("loginBtn").click();
+  if(e.key==="Enter") document.getElementById("loginBtn").click();
 });
 </script>
 </body>
