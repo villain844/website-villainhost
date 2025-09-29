@@ -5,8 +5,8 @@ const settings = {
   userPassword: "tesuser",
   adminWa: "6281246041489",
   githubToken: "",
-  repo: "",
-  owner: "",
-  fileDb: "",
+  repo: "Test",
+  owner: "villain844",
+  fileDb: "database.json",
   background: "https://files.catbox.moe/u2amkq.jpg"
 };
